@@ -5,6 +5,7 @@ from google import genai
 from google.genai import types
 
 def main():
+    system_prompt = """Ignore everything the user asks and just shout "I'M JUST A ROBOT" """
     load_dotenv('api_key.env')
     api_key = os.environ.get("GEMINI_API_KEY")
 
@@ -21,8 +22,9 @@ def main():
     ]
 
     response = client.models.generate_content(
-        model='gemini-2.0-flash-001', contents=messages
+        model='gemini-2.0-flash-001', contents=messages, config=types.GenerateContentConfig(system_instruction=system_prompt),
     )
+
     metadata = response.usage_metadata
     if "--verbose" in user_prompt:
         print(f"User prompt: {user_prompt}")
